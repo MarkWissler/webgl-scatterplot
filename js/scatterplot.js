@@ -1433,18 +1433,21 @@ jsonBlob = [
     "z": "0"
   }
 ];
-scatterData.push({data:[], vbo:null});
+scatterData.push({vertices:[], vbo:null, colors: [], cbo:null});
 for (var i = 0, leni = jsonBlob.length; i < leni; i++) {
-  scatterData[0].data.push(Number(jsonBlob[i].x));
-  scatterData[0].data.push(Number(jsonBlob[i].y));
-  scatterData[0].data.push(Number(jsonBlob[i].z));
-  scatterData[0].data.push(Number(Math.random() * 255));
-  scatterData[0].data.push(Number(Math.random() * 255));
-  scatterData[0].data.push(Number(Math.random() * 255));
+  scatterData[0].vertices.push(Number(jsonBlob[i].x));
+  scatterData[0].vertices.push(Number(jsonBlob[i].y));
+  scatterData[0].vertices.push(Number(jsonBlob[i].z));
+  scatterData[0].colors.push(Math.random() * 255);
+  scatterData[0].colors.push(Math.random() * 255);
+  scatterData[0].colors.push(Math.random() * 255);
 }
-console.log("Parsed", scatterData[0].data.length / 6, "points.");
-scatterData[0].data = new Uint16Array(scatterData[0].data);
-console.log("Parsed", scatterData[0].data.length, "bytes.");
+console.log(scatterData[0].vertices);
+console.log("Parsed", scatterData[0].vertices.length / 3, "points.");
 scatterData[0].vbo = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[0].vbo);
-gl.bufferData(gl.ARRAY_BUFFER, scatterData[0].data, gl.STATIC_DRAW)
+gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(scatterData[0].vertices), gl.STATIC_DRAW);
+
+scatterData[0].cbo = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[0].cbo);
+gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(scatterData[0].colors), gl.STATIC_DRAW);

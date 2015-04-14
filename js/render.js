@@ -90,8 +90,10 @@ function setUniforms() {
 function renderData() {
   for (i = 0; i < scatterData.length; i++) {
     gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[i].vbo);
-    gl.vertexAttribPointer(ubershader.vertex, 3, gl.UNSIGNED_SHORT, true, 12, 0);
-    gl.vertexAttribPointer(ubershader.color,  3, gl.UNSIGNED_SHORT, true, 12, 6);
-    gl.drawArrays(gl.POINTS, 0, scatterData[i].data.length/12);
+    gl.vertexAttribPointer(ubershader.vertex, 3, gl.UNSIGNED_SHORT, true, 6, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[i].cbo);
+    gl.vertexAttribPointer(ubershader.color,  3, gl.UNSIGNED_BYTE, false, 3, 0);
+    gl.drawArrays(gl.POINTS, 0, scatterData[i].vertices.length / 3);
+
   }
 }
