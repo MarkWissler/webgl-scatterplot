@@ -92,8 +92,7 @@ function renderData() {
     gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[i].vbo);
     gl.vertexAttribPointer(ubershader.vertex, 3, gl.UNSIGNED_SHORT, true, 6, 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[i].cbo);
-    gl.vertexAttribPointer(ubershader.color,  3, gl.UNSIGNED_BYTE, false, 3, 0);
+    gl.vertexAttribPointer(ubershader.color,  3, gl.UNSIGNED_BYTE, true, 3, 0);
     gl.drawArrays(gl.POINTS, 0, scatterData[i].vertices.length / 3);
-
   }
 }
