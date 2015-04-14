@@ -44,28 +44,28 @@ function onKeyDown(event) {
     case 189: // -
       break;
     case 87: // w
-      ui.keys[0] = true;
+      ui.keys |= 1 << MovementKeys.W_KEY;
       break;
     case 65: // a
-      ui.keys[1] = true;
+      ui.keys |= 1 << MovementKeys.A_KEY;
       break;
     case 83: // s
-      ui.keys[2] = true;
+      ui.keys |= 1 << MovementKeys.S_KEY;
       break;
     case 68: // d
-      ui.keys[3] = true;
+      ui.keys |= 1 << MovementKeys.D_KEY;
       break;
     case 32: // space
-      ui.keys[4] = true;
+      ui.keys |= 1 << MovementKeys.SPACE;
       break;
     case 67: // c
-      ui.keys[5] = true;
+      ui.keys |= 1 << MovementKeys.C_KEY;
       break;
     case 81: // q
-      ui.keys[6] = true;
+      ui.keys |= 1 << MovementKeys.Q_KEY;
       break;
     case 69: // e
-      ui.keys[7] = true;
+      ui.keys |= 1 << MovementKeys.E_KEY;
       break;
   }
 }
@@ -73,28 +73,28 @@ function onKeyDown(event) {
 function onKeyUp(event) {
   switch(event.keyCode) {
     case 87: // w
-      ui.keys[0] = false;
+      ui.keys &= ~(1 << MovementKeys.W_KEY);
       break;
     case 65: // a
-      ui.keys[1] = false;
+      ui.keys &= ~(1 << MovementKeys.A_KEY);
       break;
     case 83: // s
-      ui.keys[2] = false;
+      ui.keys &= ~(1 << MovementKeys.S_KEY);
       break;
     case 68: // d
-      ui.keys[3] = false;
+      ui.keys &= ~(1 << MovementKeys.D_KEY);
       break;
     case 32: // space
-      ui.keys[4] = false;
+      ui.keys &= ~(1 << MovementKeys.SPACE);
       break;
     case 67: // c
-      ui.keys[5] = false;
+      ui.keys &= ~(1 << MovementKeys.C_KEY);
       break;
     case 81: // q
-      ui.keys[6] = false;
+      ui.keys &= ~(1 << MovementKeys.Q_KEY);
       break;
     case 69: // e
-      ui.keys[7] = false;
+      ui.keys &= ~(1 << MovementKeys.E_KEY);
       break;
   }
 }

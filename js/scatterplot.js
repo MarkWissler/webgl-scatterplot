@@ -1,4 +1,3 @@
-"use asm";
 // Globals
 var gl,
   ubershader,
@@ -10,17 +9,26 @@ var gl,
   last_time = Date.now(),
   scatterData = [],
   i = 0|0,
+  MovementKeys  = {
+    W_KEY: 1,
+    A_KEY: 2,
+    S_KEY: 3,
+    D_KEY: 4,
+    SPACE: 5,
+    C_KEY: 6,
+    Q_KEY: 7,
+    E_KEY: 8
+  },
   ui = {
     click: 0|0,
     key: 0|0,
     cursor_coords: [+0,+0],
-    // TODO: the bit-shift thing. Render some stuff first.
-    keys: [false, false, false, false, false, false, false, false]
+    keys: 0
   },
   cam = {
-    rotation: [+1, +0, +0],
-    direction: [+0, +0, +0],
-    position: [+-1, +-1, +-1]
+    rotation: [0.98, -0.37, 0],
+    direction: [0.763, 0.512, -0.394],
+    position: [-0.0009, -0.00047, 0.0011]
   },
   move_vec = [+0,+0,+0],
   move_speed = +0.00001,

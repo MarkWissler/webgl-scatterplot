@@ -54,22 +54,25 @@ function render() {
  */
 function getSceneChanges(elapsed) {
   move_vec = [+0,+0,+0];
-  if (ui.keys[0]) { // w
+
+  if (ui.keys & (1 << MovementKeys.W_KEY)) { // w
     vec3.add(move_vec, move_vec, [move_speed * cam.direction[0] * elapsed, move_speed * cam.direction[1] * elapsed, move_speed * cam.direction[2] * elapsed]);
-  } else if (ui.keys[2]) { // s
+  } else if (ui.keys & (1 << MovementKeys.S_KEY)) { // s
     vec3.subtract(move_vec, move_vec, [move_speed * cam.direction[0] * elapsed, move_speed * cam.direction[1] * elapsed, move_speed * cam.direction[2] * elapsed]);
   }
-  if (ui.keys[1]) { // a
+  if (ui.keys & (1 << MovementKeys.A_KEY)) { // a
     vec3.add(move_vec, move_vec, [-move_speed * cam.direction[1] * elapsed, move_speed * cam.direction[0] * elapsed,0]);
-  } else if (ui.keys[3]) { // d
+  } else if (ui.keys & (1 << MovementKeys.D_KEY)) { // d
     vec3.subtract(move_vec, move_vec, [-move_speed * cam.direction[1] * elapsed, move_speed * cam.direction[0] * elapsed,0]);
   }
-  if (ui.keys[4]) { // space
+  if (ui.keys & (1 << MovementKeys.SPACE)) { // space
     move_vec[2] += move_speed * elapsed;
-  } else if (ui.keys[5]) { // c
+  } else if (ui.keys & (1 << MovementKeys.C_KEY)) { // c
     move_vec[2] -= move_speed * elapsed;
   }
-
+  if (move_vec[0] > 0.0 || move_vec[1] > 0.0 || move_vec[2] > 0.0 ) {
+    console.log(move_vec);
+  }
   vec3.add(cam.position, cam.position, move_vec);
 
   mat4.lookAt(mv_matrix, cam.position, [cam.position[0] + cam.direction[0],cam.position[1] + cam.direction[1], cam.position[2] + cam.direction[2]], [0.0, 0.0, 1.0]);
@@ -89,6 +92,6 @@ function renderData() {
     gl.bindBuffer(gl.ARRAY_BUFFER, scatterData[i].vbo);
     gl.vertexAttribPointer(ubershader.vertex, 3, gl.UNSIGNED_SHORT, true, 12, 0);
     gl.vertexAttribPointer(ubershader.color,  3, gl.UNSIGNED_SHORT, true, 12, 6);
-    gl.drawArrays(gl.POINTS, 0, scatterData[i].data.length / 12);
+    gl.drawArrays(gl.POINTS, 0, scatterData[i].data.length/12);
   }
 }
