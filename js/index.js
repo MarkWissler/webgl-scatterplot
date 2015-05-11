@@ -1,103 +1,3 @@
-// // Make a scene. Every object (points, lines, and so on) will be added to this scene.
-// var scene = new THREE.Scene();
-//
-// // The camera is the object that'll be responsible for converting from the clipspace into screen coordinates, as well as handling movement events.
-// var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-//
-// // The renderer abstracts a ton of the render logic from us. We make limited calls to it.
-// var renderer = new THREE.WebGLRenderer();
-//
-// // TODO: Make the size responsive and base it on the visualization container
-// renderer.setSize( window.innerWidth, window.innerHeight );
-//
-// // TODO: Instead of a statically defined insertion to the body, take an argument during initialization for where we're going to insert the render canvas.
-// document.body.appendChild( renderer.domElement );
-//
-// // Default camera position.
-// camera.position.x = 1;
-// camera.position.y = 3;
-// camera.position.z = 5;
-//
-// // Declare the controls. For 3d, orbit controls are the most ubiquitous scheme. TODO: Maybe handle 2d data by forcing into a separate type of controls.
-// controls = new THREE.OrbitControls( camera );
-// // Some control config, lots more can be done here. https://github.com/mrdoob/three.js/blob/master/examples/js/controls/OrbitControls.js
-// controls.damping = 0.2;
-//
-// // The render loop. Uses rAF, which is an absolute must for anything involving WebGL. More here: http://learningwebgl.com/blog/?p=3189
-// var render = function () {
-//   requestAnimationFrame( render );
-//   renderer.render(scene, camera);
-// };
-//
-// // It might make sense to use an IIFE for the renderloop, but this is how most ThreeJS examples invoke the renderer.
-// render();
-//
-// // Purely for debugging/demo/proof-of-concept. I list our demo datasets here, grab a query param from the url and render that dataset.
-// var dataOptions = ['data/2dimensions-1.json', 'data/2dimensions-2.json', 'data/3dimensions-1.json', 'data/3dimensions-2.json', 'data/3dimensions-3.json'];
-// var whichDataset = window.location.href.split('?')[1] || 2; // Defaults to the first 3D dataset if no queryParam.
-//
-// // This is a callback that'll parse the data, construct the buffers, and add the dataset to the scene.
-// var dataHandler = function (jsonResponse) {
-//   // var PI2 = Math.PI * 2;
-// 	//   var program = function ( context ) {
-// 	// 		context.beginPath();
-// 	// 		context.arc( 0, 0, 0.5, 0, PI2, true );
-// 	// 		context.fill();
-// 	// 	}
-//   //
-// 	// 	group = new THREE.Group();
-// 	// 	scene.add( group );
-//   //
-// 	// 	for ( var i = 0, leni = jsonResponse.length; i < leni; i++ ) {
-//   //
-// 	// 		var material = new THREE.SpriteCanvasMaterial( {
-// 	// 			color: Math.random() * 0x808008 + 0x808080,
-// 	// 			program: program
-// 	// 		} );
-//   //
-// 	// 		particle = new THREE.Sprite( material );
-// 	// 		particle.position.x = jsonResponse[i].x;
-// 	// 		particle.position.y = jsonResponse[i].y;
-// 	// 		particle.position.z = jsonResponse[i].z;
-// 	// 		particle.scale.x = particle.scale.y = Math.random() * 20 + 10;
-// 	// 		group.add( particle );
-// 	// 	}
-//   				// var PI2 = Math.PI * 2;
-//   				// var program = function ( context ) {
-//           //
-//   				// 	context.beginPath();
-//   				// 	context.arc( 0, 0, 0.5, 0, PI2, true );
-//   				// 	context.fill();
-//           //
-//   				// }
-//           //
-//   				// group = new THREE.Group();
-//   				// scene.add( group );
-//           //
-//   				// for ( var i = 0; i < 1000; i++ ) {
-//           //
-//   				// 	var material = new THREE.SpriteCanvasMaterial( {
-//   				// 		color: Math.random() * 0x808008 + 0x808080,
-//   				// 		program: program
-//   				// 	} );
-//           //
-//   				// 	particle = new THREE.Sprite( material );
-//   				// 	particle.position.x = Math.random() * 2000 - 1000;
-//   				// 	particle.position.y = Math.random() * 2000 - 1000;
-//   				// 	particle.position.z = Math.random() * 2000 - 1000;
-//   				// 	particle.scale.x = particle.scale.y = Math.random() * 20 + 10;
-//   				// 	group.add( particle );
-//   				// }
-//
-//
-//   // // Three has a built in particle system object. TODO: add point ids, add some logic to color subsets of the particle system based on id.
-//   // var pc = new THREE.PointCloud(pcGeometry, basic);
-//   // scene.add(pc);
-// };
-//
-
-//
-
 var container, stats;
 			var camera, scene, renderer, group, particle;
 			var mouseX = 0, mouseY = 0;
@@ -112,17 +12,18 @@ var container, stats;
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10, 1000 );
+        // camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
         // Default camera position.
-        camera.position.x = 1;
+        camera.position.x = 3;
         camera.position.y = 3;
         camera.position.z = 5;
 
         // Declare the controls. For 3d, orbit controls are the most ubiquitous scheme. TODO: Maybe handle 2d data by forcing into a separate type of controls.
         controls = new THREE.OrbitControls( camera );
         // Some control config, lots more can be done here. https://github.com/mrdoob/three.js/blob/master/examples/js/controls/OrbitControls.js
-        controls.damping = 0.2;
+        controls.damping = 0.02;
 
 
 				scene = new THREE.Scene();
@@ -144,9 +45,8 @@ var container, stats;
               max = 0;
 
   				for ( var i = 0; i < jsonResponse.length; i++ ) {
-
   					var material = new THREE.SpriteCanvasMaterial( {
-  						color: Math.random() * 0x808008 + 0x808080,
+  						color: jsonResponse[i].col || Math.random() * 0x808008 + 0x808080,
   						program: program
   					} );
   					particle = new THREE.Sprite( material );
@@ -161,6 +61,7 @@ var container, stats;
             if (max < big) {
               max = big;
             }
+            // TODO: incorporate negative axes
             if (min < small) {
               min = small;
             }
@@ -175,18 +76,17 @@ var container, stats;
             axes[i].vertices.push(new THREE.Vector3(0, 0, 0));
           }
 
-          // TODO: scale the axes based on the data range.
           // TODO: add tickmarks and labels.
           // X axis
-          axes[0].vertices.push(new THREE.Vector3(max, 0, 0));
+          axes[0].vertices.push(new THREE.Vector3(max * 1.2, 0, 0));
           var xAxis = new THREE.Line(axes[0], new THREE.LineBasicMaterial({color:0xff0000}));
 
           // Y axis
-          axes[1].vertices.push(new THREE.Vector3(0, max, 0));
+          axes[1].vertices.push(new THREE.Vector3(0, max * 1.2, 0));
           var yAxis = new THREE.Line(axes[1], new THREE.LineBasicMaterial({color:0x00ff00}));
 
           // Z axis
-          axes[2].vertices.push(new THREE.Vector3(0, 0, max));
+          axes[2].vertices.push(new THREE.Vector3(0, 0, max * 1.2));
           var zAxis = new THREE.Line(axes[2], new THREE.LineBasicMaterial({color:0x0000ff}));
 
           scene.add(xAxis);
@@ -207,7 +107,7 @@ var container, stats;
         getRequest(dataOptions[whichDataset], dataHandler);
 
 
-        //
+        // These wire up some of the stock events. Keeping them around in case we need to do something with them.
 				// document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				// document.addEventListener( 'touchstart', onDocumentTouchStart, false );
 				// document.addEventListener( 'touchmove', onDocumentTouchMove, false );
