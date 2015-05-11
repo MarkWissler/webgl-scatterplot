@@ -140,6 +140,9 @@ var container, stats;
   				group = new THREE.Group();
   				scene.add( group );
 
+          var min = 0,
+              max = 0;
+
   				for ( var i = 0; i < jsonResponse.length; i++ ) {
 
   					var material = new THREE.SpriteCanvasMaterial( {
@@ -148,12 +151,47 @@ var container, stats;
   					} );
   					particle = new THREE.Sprite( material );
   					particle.position.x = Number(jsonResponse[i].x);//Math.random() * 2000 - 1000;
-            console.log(typeof particle.position.x);
   					particle.position.y = Number(jsonResponse[i].y);
   					particle.position.z = Number(jsonResponse[i].z);
   					particle.scale.x = particle.scale.y = 1;
+
+            var big = Math.max(particle.position.x, particle.position.y, particle.position.z);
+            var small = Math.min(particle.position.x, particle.position.y, particle.position.z);
+
+            if (max < big) {
+              max = big;
+            }
+            if (min < small) {
+              min = small;
+            }
+
   					group.add( particle );
   				}
+
+          // Make three lines for axes for now. R,G,B corresponds to X,Y,Z. The coloring is mainly for debugging.
+          var axes = [];
+          for (var i = 0; i < 3; i ++) {
+            axes.push(new THREE.Geometry());
+            axes[i].vertices.push(new THREE.Vector3(0, 0, 0));
+          }
+
+          // TODO: scale the axes based on the data range.
+          // TODO: add tickmarks and labels.
+          // X axis
+          axes[0].vertices.push(new THREE.Vector3(max, 0, 0));
+          var xAxis = new THREE.Line(axes[0], new THREE.LineBasicMaterial({color:0xff0000}));
+
+          // Y axis
+          axes[1].vertices.push(new THREE.Vector3(0, max, 0));
+          var yAxis = new THREE.Line(axes[1], new THREE.LineBasicMaterial({color:0x00ff00}));
+
+          // Z axis
+          axes[2].vertices.push(new THREE.Vector3(0, 0, max));
+          var zAxis = new THREE.Line(axes[2], new THREE.LineBasicMaterial({color:0x0000ff}));
+
+          scene.add(xAxis);
+          scene.add(yAxis);
+          scene.add(zAxis);
 
   				renderer = new THREE.CanvasRenderer();
   				renderer.setPixelRatio( window.devicePixelRatio );
@@ -167,30 +205,7 @@ var container, stats;
 
 
         getRequest(dataOptions[whichDataset], dataHandler);
-        // Make three lines for axes for now. R,G,B corresponds to X,Y,Z. The coloring is mainly for debugging.
-        var axes = [];
-        for (var i = 0; i < 3; i ++) {
-          axes.push(new THREE.Geometry());
-          axes[i].vertices.push(new THREE.Vector3(0, 0, 0));
-        }
 
-        // TODO: scale the axes based on the data range.
-        // TODO: add tickmarks and labels.
-        // X axis
-        axes[0].vertices.push(new THREE.Vector3(100, 0, 0));
-        var xAxis = new THREE.Line(axes[0], new THREE.LineBasicMaterial({color:0xff0000}));
-
-        // Y axis
-        axes[1].vertices.push(new THREE.Vector3(0, 100, 0));
-        var yAxis = new THREE.Line(axes[1], new THREE.LineBasicMaterial({color:0x00ff00}));
-
-        // Z axis
-        axes[2].vertices.push(new THREE.Vector3(0, 0, 100));
-        var zAxis = new THREE.Line(axes[2], new THREE.LineBasicMaterial({color:0x0000ff}));
-
-        scene.add(xAxis);
-        scene.add(yAxis);
-        scene.add(zAxis);
 
         //
 				// document.addEventListener( 'mousemove', onDocumentMouseMove, false );
